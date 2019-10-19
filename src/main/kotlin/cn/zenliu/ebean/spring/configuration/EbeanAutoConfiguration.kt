@@ -21,6 +21,7 @@ class EbeanAutoConfiguration {
 		tenantSchemaProvider: TenantSchemaProvider?,
 		tenantCatalogProvider: TenantCatalogProvider?,
 		dataSource: DataSource?,
+		idGenerators:MutableList<IdGenerator>,
 		objectMapper: ObjectMapper?,
 		config: EbeanProperties) = DatabaseFactory.create(DatabaseConfig().apply {
 		name = "db"
@@ -34,7 +35,7 @@ class EbeanAutoConfiguration {
 		tenantSchemaProvider?.let { this.tenantSchemaProvider = it }
 		tenantCatalogProvider?.let { this.tenantCatalogProvider = it }
 		isDefaultServer = true
-
+		this.idGenerators=idGenerators
 		config.names.forEach {
 			DatabaseFactory.create(DatabaseConfig().apply {
 				name = it
@@ -47,6 +48,7 @@ class EbeanAutoConfiguration {
 				tenantSchemaProvider?.let { this.tenantSchemaProvider = it }
 				objectMapper?.let { this.objectMapper = it }
 				isDefaultServer=false
+				this.idGenerators=idGenerators
 			})
 		}
 	})
